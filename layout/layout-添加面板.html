@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>My first Three.js app</title>
+		<style>
+            h2{
+                font: 14px Arial, sans-serif;
+                color:#fff;
+                padding: 10px;
+                text-align: center;
+            }
+
+            html, body{
+                height: 100%;
+            }
+
+            *{
+                margin: 0;
+                padding: 0;
+                list-style-type:none;
+            }
+
+            #wrapper{
+                height: 100%;
+                position: relative;
+                width: 100%;
+                overflow: hidden;
+            }
+
+            #menuContainer{
+                width: 20%;
+                height: 100%;
+                position:absolute;
+                top: 0;
+                left: 0;
+                background: #222;
+            }
+
+            #menuContainer li{
+                cursor: move;
+                border-bottom: 1px solid #000;
+                border-top: 1px solid #333;
+                cursor: pointer;
+                padding: 10px 5px;
+                color: #BBB;
+                background: #1a1a1a;
+                font: 12px Arial, sans-serif;
+            }
+
+            #menuContainer li:hover{
+                background: #111;
+                color: #CCC;
+            }
+
+            #layoutContainer{
+                width: 80%;
+                height: 100%;
+                position:absolute;
+                top: 0;
+                left: 20%;
+                box-shadow: -3px 0px 9px 0px rgba( 0, 0, 0, 0.4 );
+            }
+        </style>
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.1.min.js">
+        </script>
+         <script type="text/javascript" src="https://golden-layout.com/files/latest/js/goldenlayout.min.js"></script>
+		 <link type="text/css" rel="stylesheet" href="https://golden-layout.com/files/latest/css/goldenlayout-dark-theme.css" />
+		 <link type="text/css" rel="stylesheet" href="https://golden-layout.com/files/latest/css/goldenlayout-base.css" />			
+	</head>
+	<body>
+        <div id="wrapper">
+            <ul id="menuContainer"></ul>
+            <div id="layoutContainer"></div>
+        </div>
+                
+		<script>
+			var config = {
+                settings: {
+                    selectionEnabled: true
+                },
+                content:[{
+                    type:'row',
+                    content:[{
+                        type:'component',
+                        componentName: 'example',
+                        componentState: {text:'Component1'}
+                    },{
+                        type:'component',
+                        componentName:'example',
+                        componentState: {text:'Component2'}
+                    }]
+                }]
+            }
+            
+            var myLayout = new window.GoldenLayout(config,$('#layoutContainer'));
+            myLayout.registerComponent('example',function(container,state) {
+                container.getElement().html('<h2>' + state.text + '</h2>');
+            })
+            myLayout.init();
+
+            var addMenuItem = function(text) {         
+                var element = $('<li>' + text + '</li>');
+                $('#menuContainer').append(element);
+                var newItemConfig = {
+                    type:'component',
+                    componentName:'example',
+                    componentState:{text: text}
+                }
+                myLayout.createDragSource( element, newItemConfig );
+                element.click(function() {
+                    // if (myLayout.selectedItem === null) {
+                    //     alert('No item selected');
+                    // } else {
+                    //     myLayout.selectedItem.addChild(newItemConfig)
+                    // }
+                    console.log(myLayout.root.contentItems[0])
+                    myLayout.root.contentItems[0].addChild(newItemConfig)
+                })
+            };
+            addMenuItem('User added Conponent A');
+            addMenuItem('User added Conponent B');
+
+
+		</script>
+	</body>
+</html>

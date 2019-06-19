@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script type="text/javascript" src='node_modules/dat.gui/build/dat.gui.js'></script>
+</head>
+<body>
+
+</body>
+<script type="text/javascript">
+	var PizzyText = function(){
+		this.message = 'dat.gui';
+		this.speed = 0.8;
+		this.displayOutline = false;
+		this.explode = function(){
+			console.log('explode');
+		}
+		this.maxSize = 10;
+		// this.noiseStrength = function(){};
+	}
+	window.onload = function() {
+		/*
+		var gui = new dat.GUI();
+		var text = new PizzyText();
+		gui.add(text,'message');
+		gui.add(text,'speed',-5,5);
+		gui.add(text,'displayOutline');
+		gui.add(text,'explode');
+		gui.add(text,'noiseStrength').step(5);//增量
+		gui.add(text,'growSpeed',-5,5);//对数字限制最大值最小值；
+		gui.add(text,'message',['pizza','chorme','hooray']);
+		gui.add(text,'speed',{ Stopped:0, Slow:0.1, Past:5 });
+		*/
+
+		/*
+		var gui = new dat.GUI();
+		var text = new PizzyText();
+		var f1 = gui.addFolder('Flow Field');
+		f1.add(text, 'speed');
+		f1.add(text, 'message');
+
+		var f2 = gui.addFolder('Letters');
+		f2.add(text, 'displayOutline');
+		f2.open();
+		*/
+
+		/*
+		var gui = new dat.GUI();
+		var fizzyText = new PizzyText();
+		var controller = gui.add(fizzyText,'maxSize',0,10);
+		controller.onChange(function(value) {
+
+		});
+		controller.onFinishChange(function(value) {
+			alert('The new value is ' + value);
+		})
+		*/
+
+		var fizzyText = new PizzyText();
+		var gui = new dat.GUI();
+		gui.add(fizzyText,'noiseStrength').step(5);//增量
+		gui.add(fizzyText,'noiseStrength',0,100).listen();
+		var update = function(){
+			requestAnimationFrame(update);
+			fizzyText.noiseStrength = Math.random();
+		};
+		update();
+	}
+</script>
+</html>

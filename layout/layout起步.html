@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>My first Three.js app</title>
+		<style>
+        </style>
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.1.min.js">
+        </script>
+         <script type="text/javascript" src="https://golden-layout.com/files/latest/js/goldenlayout.min.js"></script>
+		 <link type="text/css" rel="stylesheet" href="https://golden-layout.com/files/latest/css/goldenlayout-dark-theme.css" />
+		 <link type="text/css" rel="stylesheet" href="https://golden-layout.com/files/latest/css/goldenlayout-base.css" />			
+	</head>
+	<body>
+		<script>
+			var config = {
+				content: [{
+					type:'row',
+					content:[
+						{
+							type:'component',
+							componentName: 'testComponentA',
+							componentState: { label: 'A' }
+						},
+						{
+							type:'column',
+							content:[
+								{
+									type:'component',
+									componentName: 'testComponent',
+									componentState: {label:'B'}
+								},
+								{
+									type:'component',
+									componentName: 'testComponent',
+									componentState: {label: 'C'}
+								}
+							]
+						},
+						{
+							type:'component',
+							componentName: 'testComponent',
+							componentState: { label: 'D' }
+						},
+						{
+							type:'component',
+							componentName: 'testComponent',
+							componentState: { label: 'E' }
+						}
+					]
+				}]
+			}
+			var savedState = localStorage.getItem('savedState');
+			// var myLayout = new GoldenLayout( config );
+
+			if( savedState !== null ) {
+				myLayout = new GoldenLayout( JSON.parse( savedState ) );
+			} else {
+				myLayout = new GoldenLayout( config );
+			}
+			myLayout.registerComponent('testComponentA',function (container,componentState) {
+
+			})
+			myLayout.registerComponent('testComponent',function(container,componentState){
+				var input = $('<div class="EDITION" style="width: 50px; height: 100px; background-color:red"></div>');
+				if (componentState.label) {
+					input.val(componentState.label);
+				}
+				input.on('change',function(){
+					container.extendState({
+						label: input.val()
+					})
+				})
+				// container.getElement().html('<h2>' + componentState.label + '</h2>');
+				container.getElement().append(input);
+			})
+			myLayout.init();
+			// item.parent.removeChild( item )
+			var destoryItem = myLayout.getComponent('testComponentA');
+			destoryItem.parent.removeChild(destoryItem);
+			// 状态存储
+			myLayout.on('stateChanged',function(){
+				var state = JSON.stringify(myLayout.toConfig());
+				localStorage.setItem('savedState',state);
+			});
+		</script>
+	</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>My first Three.js app</title>
+		<style>
+			body { 
+				margin: 0;
+				}
+			canvas { 
+				width: 100%; 
+				height: 100%
+				}
+		</style>
+	</head>
+	<body>
+		<script src="libs/three.js"></script>
+		<script>
+			//添加三要素：场景、相机、渲染器
+			var scene = new THREE.Scene();
+			//远景相机，类似于人眼观察的方式 @param {1:视角，2：相机拍摄面的长宽比（宽/高），3：近裁剪面，4：远裁剪面}
+			var camera = new THREE.PerspectiveCamera(75,window.innerWidth/window.innerHeight,0.1,1000);
+			var renderer = new THREE.WebGLRenderer();
+			//设置渲染空间的尺寸
+			renderer.setSize(window.innerWidth,window.innerHeight);
+			document.body.appendChild(renderer.domElement);
+
+			//添加演员
+			var geometry = new THREE.BoxGeometry(1,1,1);
+			var material = new THREE.MeshBasicMaterial({color:'red'});
+			//网孔是用来承载几何模型的一个对象，还可以把材料应用到它上面。
+			var cube = new THREE.Mesh(geometry,material);
+			//默认情况下，对象被添加到原点处，即坐标（0,0,0），这将导致相机和立方体发生重叠，为了避免这样，将相机位置移出来一点
+			scene.add(cube);
+			camera.position.z = 5;
+
+			//创建一个循环，以每秒60次的频率绘制场景
+			function render () {
+				// 替代setInterval. 有几个特点：浏览器Tab切换后停止渲染以节约资源、和屏幕刷新同步避免无效刷新、在不支持该接口的浏览器中能安全回退为setInterval
+				requestAnimationFrame(render);
+				cube.rotation.x += 0.1;
+				cube.rotation.y += 0.1;
+
+				renderer.render(scene,camera);
+			}
+			render();
+		</script>
+	</body>
+</html>

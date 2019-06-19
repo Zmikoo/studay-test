@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script src='./colorPicker/color.all.min.js'></script>
+</head>
+<body>
+	<input type="text" name="text">
+</body>
+<script type="text/javascript">
+function eulerToQuaternion (X,Y,Z) {
+    let sin = Math.sin;
+    let cos = Math.cos;
+    let x,y,z,w;
+    x = sin(Y/2)*sin(Z/2)*cos(X/2) + cos(Y/2)*cos(Z/2)*sin(X/2);
+    y = sin(Y/2)*cos(Z/2)*cos(X/2) + cos(Y/2)*sin(Z/2)*sin(X/2);
+    z = cos(Y/2)*sin(Z/2)*cos(X/2) - sin(Y/2)*cos(Z/2)*sin(X/2);
+    w = cos(Y/2)*cos(Z/2)*cos(X/2) - sin(Y/2)*sin(Z/2)*sin(X/2);
+	return [x,y,z,w];
+}
+let a = eulerToQuaternion(0,0,0);
+let b = eulerToQuaternion(0,90,0);
+let c = eulerToQuaternion(0,0,90);
+console.log(a,b,c)
+</script>
+
+</html>

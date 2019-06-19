@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>My first Three.js app</title>
+		<style>
+            .chooseColor{
+                width: 10px;
+                height: 10px;
+                background: #fff;
+                float: left;
+                margin: 5px 5px 0 0;
+                cursor: pointer;
+            }
+
+            .chooseColor .selectedColor{
+                width: 10px;
+                height: 10px;
+            }
+
+            .chooseColor ul{
+                display: none;
+                box-shadow: 2px 2px 3px rgba( 0, 0, 0, 0.7 );
+            }
+
+            .chooseColor:hover ul{
+                display: block;
+            }
+
+            .chooseColor ul,
+            .chooseColor ul li{
+                margin: 0;
+                padding: 0;
+                list-style-type: none;
+            }
+
+            .chooseColor ul li{
+                width: 10px;
+                height: 10px;
+                cursor: pointer;
+            }
+
+            .chooseColor ul li:hover{
+                border: 1px solid orange;
+                width: 8px;
+                height: 8px;
+            };
+        </style>
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.1.min.js">
+        </script>
+         <script type="text/javascript" src="https://golden-layout.com/files/latest/js/goldenlayout.min.js"></script>
+		 <link type="text/css" rel="stylesheet" href="https://golden-layout.com/files/latest/css/goldenlayout-dark-theme.css" />
+		 <link type="text/css" rel="stylesheet" href="https://golden-layout.com/files/latest/css/goldenlayout-base.css" />			
+	</head>
+	<body>
+        <template>
+            <div class = 'chooseColor'>
+                <div class = 'selectedColor'></div>
+                <ul>
+                    <li style="background: #014FA1"></li>
+                    <li style="background: #1D84BD"></li>
+                    <li style="background: #EEEEEE"></li>
+                    <li style="background: #F15C25"></li>
+                    <li style="background: #EB0506"></li>
+                </ul>
+            </div>
+        </template>
+		<script>
+			var myLayout = new GoldenLayout({
+                content:[{
+                    type:'row',
+                    content:[{
+                        type:'component',
+                        componentName: 'testComponent',
+                        componentState:{
+                            color:'#1D84BD' 
+                        }
+                    },{
+                        type:'component',
+                        componentName: 'testComponent',
+                        componentState:{
+                            color:'#F15C25'
+                        }
+                    }]
+                }]
+            });
+            myLayout.registerComponent('testComponent',function(container,state){
+                container.getElement().css('background-color',state.color);
+            });
+            myLayout.init()
+            myLayout.on('stackCreated',function (stack) {
+                //HTML for the colorDropdown is stored in a template tag
+                var colorDropdown = $( $( 'template' ).html() );
+                var colorDropdownBtn = colorDropdown.find('.selectedColor');
+                var setColor = function( color ){
+                    /*
+                    * Accessing the container and updating its state
+                    */
+                    var container = stack.getActiveContentItem().container;
+
+                    // Set the color on both the dropDown and the background
+                    colorDropdownBtn.css( 'background-color', color );
+                    container.getElement().css( 'background-color', color );
+
+                    // Update the state
+                    container.extendState({ color: color });
+                };
+                /*（在顶部tab栏添加选择背景色的div$('.selectedColor')）
+                * Accessing the DOM element that contains the popout, maximise and * close icon
+                */
+                stack.header.controlsContainer.prepend(colorDropdown);
+                /*
+                * Listening for activeContentItemChanged. This happens initially
+                * when the stack is created and everytime the user clicks a tab
+                */
+                stack.on('activeContentItemChanged',function (contentItem) {
+                    setColor(contentItem.container.getState().color);
+                });
+                // Update the color when the user selects a different color
+                // from the dropdown
+                colorDropdown.find('li').click(function () {
+                    setColor($(this).css('background-color'));
+                })
+            })
+
+		</script>
+	</body>
+</html>
