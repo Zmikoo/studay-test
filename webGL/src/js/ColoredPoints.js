@@ -1,3 +1,4 @@
+// 只有顶点着色器可以使用attribute变量，片源着色器的变量有uniform和varying变量
 var VSHADER_SOURCE = `
 	attribute vec4 a_Position;\n
 	void main(){\n
@@ -5,6 +6,7 @@ var VSHADER_SOURCE = `
 		gl_PointSize = 10.0;\n
 	}\n
 `
+// precision精度限定词指定变量的范围（最大值最小值）和精度
 var FSHADER_SOURCE = `
 	precision mediump float;\n
 	uniform vec4 u_FragColor;\n
