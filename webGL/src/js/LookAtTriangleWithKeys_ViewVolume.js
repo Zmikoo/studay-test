@@ -1,3 +1,4 @@
+// 顶点位置 = 投影矩阵（正射投影/透视投影） * 视图矩阵 * 顶点坐标
 var VSHADER_SOURCE = `
 	attribute vec4 a_Position;\n
 	attribute vec4 a_Color;\n
@@ -29,15 +30,17 @@ function main () {
 	}
 	var n = initVertexBuffers(gl);
 
+	// 视图矩阵
 	var u_ViewMatrix = gl.getUniformLocation(gl.program,'u_ViewMatrix');
-	var u_ProjMatrix = gl.getUniformLocation(gl.program,'u_ProjMatrix');
-
 	var viewMatrix = new Matrix4(); // 等同上边注释的代码
 	document.onkeydown = function (ev) {
 		keydown(ev,gl,n,u_ViewMatrix,viewMatrix);
 	}
 
+	// 正射投影矩阵
+	var u_ProjMatrix = gl.getUniformLocation(gl.program,'u_ProjMatrix');
 	var projMatrix = new Matrix4();
+	// @param: left,right(指定近裁剪面的左边界和右边界),bottom,top(指定近裁剪面的上边界和下边界)，near,far(指定近裁剪面和远裁剪面的位置)
 	projMatrix.setOrtho(-1.0,1.0,-1.0,1.0,0.0,2.0);
 	gl.uniformMatrix4fv(u_ProjMatrix,false,projMatrix.elements);
 
@@ -62,6 +65,7 @@ function initVertexBuffers(gl) {
 	var vertexColorbuffer = gl.createBuffer();
 	gl.bindBuffer(gl.ARRAY_BUFFER, vertexColorbuffer);
 	gl.bufferData(gl.ARRAY_BUFFER, verticesColors, gl.STATIC_DRAW);
+
 	var FSIZE = verticesColors.BYTES_PER_ELEMENT;
 
 	var a_Position = gl.getAttribLocation(gl.program,'a_Position');
@@ -75,6 +79,7 @@ function initVertexBuffers(gl) {
 }
 
 function keydown(ev,gl,n,u_ViewMatrix,viewMatrix) {
+	// 按下键盘改变视点位置
 	if (ev.keyCode === 39) {
 		g_eyeX += 0.01;
 	} else if (ev.keyCode === 37) {
@@ -86,8 +91,10 @@ function keydown(ev,gl,n,u_ViewMatrix,viewMatrix) {
 }
 
 function draw(gl,n,u_ViewMatrix,viewMatrix) {
+	// 创建视图矩阵
 	viewMatrix.setLookAt(g_eyeX,g_eyeY,g_eyeZ,0,0,0,0,1,0);
 	gl.uniformMatrix4fv(u_ViewMatrix,false,viewMatrix.elements);
+
 	gl.clear(gl.COLOR_BUFFER_BIT);
 	gl.drawArrays(gl.TRIANGLES,0,n);
 }

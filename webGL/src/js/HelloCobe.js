@@ -68,7 +68,7 @@ function initVertexBuffers(gl) {
 	gl.bindBuffer(gl.ARRAY_BUFFER, vertexColorbuffer);
 	gl.bufferData(gl.ARRAY_BUFFER, verticesColors, gl.STATIC_DRAW);
 	var FSIZE = verticesColors.BYTES_PER_ELEMENT;
-
+	
 	var a_Position = gl.getAttribLocation(gl.program,'a_Position');
 	gl.vertexAttribPointer(a_Position,3,gl.FLOAT,false,FSIZE*6,0);
 	gl.enableVertexAttribArray(a_Position);
@@ -77,7 +77,7 @@ function initVertexBuffers(gl) {
 	gl.vertexAttribPointer(a_Color,3,gl.FLOAT,false,FSIZE*6,FSIZE*3);
 	gl.enableVertexAttribArray(a_Color);
 
-
+	// 注意：顶点索引数据只需要写入缓存区即可，绑定目标为gl.ELEMENT_ARRAY_BUFFER,不需要赋给内部变量
 	var indexBuffer = gl.createBuffer();
 	gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,indexBuffer);
 	gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,indices,gl.STATIC_DRAW);

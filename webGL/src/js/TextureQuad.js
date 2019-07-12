@@ -46,6 +46,7 @@ function initVertexBuffers(gl){
 	gl.bufferData(gl.ARRAY_BUFFER,verticesTexCoords,gl.STATIC_DRAW);
 
 	var FSIZE = verticesTexCoords.BYTES_PER_ELEMENT;
+
 	var a_Position = gl.getAttribLocation(gl.program,'a_Position');
 	if(a_Position < 0){
             console.log("无法获取到存储位置");
@@ -53,6 +54,7 @@ function initVertexBuffers(gl){
         }
 	gl.vertexAttribPointer(a_Position,2,gl.FLOAT,false,FSIZE*4,0);
 	gl.enableVertexAttribArray(a_Position);
+	
 	var a_TexCoord = gl.getAttribLocation(gl.program,'a_TexCoord');
 	if (a_TexCoord < 0) {
 		console.log('无法获取到存储位置');
@@ -88,9 +90,10 @@ function loadTexture(gl,n,texture,u_Sampler,image){
 	gl.activeTexture(gl.TEXTURE0);// 开启0号纹理单元
 	gl.bindTexture(gl.TEXTURE_2D,texture);// 绑定纹理对象
 
+	// 配置纹理参数
 	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-	gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);// 配置纹理参数
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+	gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);
 	gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
 
 	gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,gl.RGB,gl.UNSIGNED_BYTE,image);// 配置纹理图像

@@ -34,7 +34,9 @@ var g_colors = [];
 function click(ev,gl,canvas,a_Position,u_FragColor) {
 	var x = ev.clientX;
 	var y = ev.clientY;
+	// 获取canvas在浏览器客户区的坐标
 	var rect = ev.target.getBoundingClientRect();
+	// 浏览器坐标转为canvas的坐标再转为WebGL坐标；
 	x = ((x - rect.left) - canvas.width / 2) / (canvas.width / 2);
 	y = ((canvas.height / 2 - (y - rect.top))) / (canvas.height / 2);
 
@@ -47,7 +49,7 @@ function click(ev,gl,canvas,a_Position,u_FragColor) {
 	} else {
 		g_colors.push([1.0,1.0,1.0,1.0]); // 白色
 	}
-
+	// 用指定的背景色清空canvas
 	gl.clear(gl.COLOR_BUFFER_BIT);
 
 	for (let i = 0, len = g_points.length; i < len; i++) {

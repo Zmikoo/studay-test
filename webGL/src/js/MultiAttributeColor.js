@@ -24,15 +24,18 @@ function main(){
 	gl.clearColor(0.0,0.0,0.0,1.0);
 	var n = initVertexBuffers(gl);
 	gl.clear(gl.COLOR_BUFFER_BIT);
+	// gl.drawArrays(gl.LINES,0,n);
+	// gl.drawArrays(gl.LINE_STRIP,0,n);
+	// gl.drawArrays(gl.LINE_LOOP,0,n);
 	// gl.drawArrays(gl.POINTS,0,n);// 三个不同颜色的点 
 	gl.drawArrays(gl.TRIANGLES,0,n);// 彩色三角形
 }
 main()
 function initVertexBuffers(gl) {
 	var verticesColors = new Float32Array([
-			0.0,0.5,1.0,0.0,0.0,
-			-0.5,-0.5,0.0,1.0,0.0,
-			0.5,-0.5,0.0,0.0,1.0
+			0.0,0.5,1.0, 0.0,0.0,
+			-0.5,-0.5,0.0, 1.0,0.0,
+			0.5,-0.5,0.0, 0.0,1.0
 		]);
 	var n = 3;
 
