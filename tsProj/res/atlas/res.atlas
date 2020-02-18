@@ -1,0 +1,144 @@
+{
+    "frames": {
+        "camera.png": {
+            "frame": {
+                "h": 97,
+                "idx": 0,
+                "w": 97,
+                "x": 475,
+                "y": 495
+            },
+            "sourceSize": {
+                "h": 97,
+                "w": 97
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        "close-pop-p.png": {
+            "frame": {
+                "h": 120,
+                "idx": 0,
+                "w": 120,
+                "x": 354,
+                "y": 495
+            },
+            "sourceSize": {
+                "h": 120,
+                "w": 120
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        "close-pop.png": {
+            "frame": {
+                "h": 65,
+                "idx": 0,
+                "w": 108,
+                "x": 210,
+                "y": 549
+            },
+            "sourceSize": {
+                "h": 65,
+                "w": 108
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        "intro-btn.png": {
+            "frame": {
+                "h": 209,
+                "idx": 0,
+                "w": 209,
+                "x": 0,
+                "y": 405
+            },
+            "sourceSize": {
+                "h": 209,
+                "w": 209
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        "question.png": {
+            "frame": {
+                "h": 209,
+                "idx": 0,
+                "w": 209,
+                "x": 405,
+                "y": 0
+            },
+            "sourceSize": {
+                "h": 209,
+                "w": 209
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        "recognize.png": {
+            "frame": {
+                "h": 143,
+                "idx": 0,
+                "w": 143,
+                "x": 210,
+                "y": 405
+            },
+            "sourceSize": {
+                "h": 150,
+                "w": 150
+            },
+            "spriteSourceSize": {
+                "x": 4,
+                "y": 4
+            }
+        },
+        "rocker-bg.png": {
+            "frame": {
+                "h": 404,
+                "idx": 0,
+                "w": 404,
+                "x": 0,
+                "y": 0
+            },
+            "sourceSize": {
+                "h": 404,
+                "w": 404
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        "rocker-btn.png": {
+            "frame": {
+                "h": 284,
+                "idx": 0,
+                "w": 142,
+                "x": 405,
+                "y": 210
+            },
+            "sourceSize": {
+                "h": 284,
+                "w": 142
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0
+            }
+        }
+    },
+    "meta": {
+        "image": "res.png",
+        "prefix": "res/"
+    }
+}

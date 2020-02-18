@@ -17,18 +17,18 @@ function clock()
 			this.fill = false;
 			this.fillColor = '#ff0000';
 			this.update = function(){
-			if(!this.ctx)throw new Error('你没有指定ctx对象。');
-			var ctx = this.ctx
-			ctx.save();
-			ctx.lineWidth = this.borderWidth;
-			ctx.strokeStyle = this.borderColor;
-			ctx.fillStyle = this.fillColor;
-			ctx.translate(this.x, this.y);
-			if(this.rotation)ctx.rotate(this.rotation * Math.PI/180);
-			if(this.draw)this.draw(ctx);
-			if(this.fill)ctx.fill();
-			ctx.stroke();
-			ctx.restore();
+				if(!this.ctx)throw new Error('你没有指定ctx对象。');
+				var ctx = this.ctx
+				ctx.save();
+				ctx.lineWidth = this.borderWidth;
+				ctx.strokeStyle = this.borderColor;
+				ctx.fillStyle = this.fillColor;
+				ctx.translate(this.x, this.y);
+				if(this.rotation)ctx.rotate(this.rotation * Math.PI/180);
+				if(this.draw)this.draw(ctx);
+				if(this.fill)ctx.fill();
+				ctx.stroke();
+				ctx.restore();
 			}
 		};
 		function Line(){};
@@ -133,6 +133,6 @@ function clock()
 			center.update();
 		},(1000/frameRate)|0);
 	}else{
-	alert('您的浏览器不支持Canvas无法预览.\n跟我一起说："Fuck Internet Exploer!"');
+		alert('您的浏览器不支持Canvas无法预览.\n跟我一起说："Fuck Internet Exploer!"');
 	}
 }

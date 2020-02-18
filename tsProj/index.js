@@ -1,12 +1,22 @@
-function greeter(person) {
-    return 'Hello, ' + person.firstName + ' ' + person.lastName;
-}
-var Student = /** @class */ (function () {
-    function Student(firstName, middleInitial, lastName) {
-        this.firstName = firstName;
-        this.middleInitial = middleInitial;
-        this.lastName = lastName;
-        this.fullName = firstName + '' + middleInitial + '' + lastName;
-    }
-    return Student;
-}());
+/**
+ * 设置LayaNative屏幕方向，可设置以下值
+ * landscape           横屏
+ * portrait            竖屏
+ * sensor_landscape    横屏(双方向)
+ * sensor_portrait     竖屏(双方向)
+ */
+window.screenOrientation = "sensor_landscape";
+
+//-----libs-begin-----
+loadLib("libs/laya.core.js")
+loadLib("libs/laya.ani.js")
+loadLib("libs/laya.ui.js")
+loadLib("libs/laya.d3.js")
+loadLib("libs/html2canvas.min.js")
+loadLib("libs/jquery.min.js")
+loadLib("libs/laya.physics3D.js")
+//-----libs-end-------
+loadLib("js/bookInfos.js")
+loadLib("js/scene.js")
+loadLib("js/bundle.js");
+loadLib("js/savehtml.js");
