@@ -2,7 +2,10 @@ body {
     font: 14px "Century Gothic", Futura, sans-serif;
     margin: 20px;
   }
-  
+  *{
+    padding:0px;
+    margin:0px;
+  }
   ol, ul {
     padding-left: 30px;
   }
@@ -48,4 +51,82 @@ body {
   .game-info {
     margin-left: 20px;
   }
+
   
+  .books-box{
+    position: absolute;
+    left:0px;
+    top:0px;
+    width: 100%;
+    /* height: 100%; */
+    display:flex;
+    justify-content: space-around;
+    /* height: 1000px; */
+    /* animation: flow 20s infinite; */
+}
+.preview-box .books-box .books-col{
+}
+.preview-box .books-box .books-col img{
+  width: 100%;
+  margin: 10px 0px;
+}
+
+
+  ul,li{
+    list-style: none;
+    padding:0px;
+    margin:0px;
+  }
+  .slider-container{
+    width: 400px;
+    height: 300px;
+    border:5px solid red;
+    margin:0 auto;
+    position: relative;
+    overflow: hidden;
+  }
+  .slider-container ul{
+    position: relative;
+    /* height: 300px; */
+    width: 400px;
+    left:0;
+    top:0;
+  }
+  .slider-container li{
+    width: 400px;
+    height: 300px;
+    /* float: left; */
+  }
+  .slider-container li img{
+    width: 100%;
+    height: 100%;
+  }
+  .slider-arrows{
+    position: absolute;
+    width: 100%;
+    height:40px;
+    top:50%;
+    transform: translateY(-50%);
+    left:0;
+  }
+  .slider-arrows span{
+      width: 30px;height: 40px;line-height: 40px;display: block;
+      background: #ffffff;text-align: center;-webkit-user-select: none;
+      cursor: pointer;
+  }
+  .slider-arrows span:nth-child(1){
+    float: left;
+  }
+  .slider-arrows span:nth-child(2){
+    float: right;
+  }
+  .slider-dots{
+    position: absolute;width: 100%;left: 0;bottom: 20px;text-align: center;
+  }
+  .slider-dots span{
+    background: #ffffff;display: inline-block;width: 20px;height: 20px;
+      border-radius: 50%;margin: 3px;cursor: pointer;
+  }
+  .slider-dots span.active{
+    background: rgba(233,222,100,0.8);
+  }

@@ -3,4 +3,9 @@ node_modules/
 /tsProj/node_modules
 /layaairDemo
 /LayaTest
-
+dist/
+.laya/
+bin/
+laya/
+libs/
+*.zip

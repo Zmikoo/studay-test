@@ -1,13 +1,8 @@
+// 官方小游戏示例
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 function Square (props) {
-    // constructor(props) {    
-    //   super(props);
-    //   this.state = {
-    //     value: null,
-    //   }
-    // }
       return (
         <button className="square" 
                 onClick = {()=> { props.onClick() }}>
@@ -17,14 +12,6 @@ function Square (props) {
   }
   
 class Board extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     squares: Array(9).fill(null),
-  //     xIsNext: true,
-  //   }
-  // }
-
   renderSquare(i) {
     return <Square 
               value={this.props.squares[i]}
@@ -33,10 +20,26 @@ class Board extends React.Component {
             />;
   }
 
+  // renderSquareRow(rowNum) {
+  //   const crrRowArr;
+  //   if (rowNum === 0) {
+  //     crrRowArr = [0,1,2];
+  //   } else if (rowNum === 1) {
+  //     crrRowArr = [3,4,5]
+  //   } else {
+  //     crrRowArr = [6,7,8]
+  //   }
+  //   crrRowArr.map((state,index) => {
+  //     return <Square key={index} value={this.props.squares[i]} onClick = { ()=> this.props.onClick(i) }
+  //   />;
+  //   })
+  // }
+
   render() {
     return (
       <div>
         <div className="board-row">
+          {/* {this.renderSquareRow(0)} */}
           {this.renderSquare(0)}
           {this.renderSquare(1)}
           {this.renderSquare(2)}
@@ -61,7 +64,7 @@ class Game extends React.Component {
     super(props);
     this.state = {
       history: [{
-        squares: Array(9).fill(null),
+        squares: Array(9).fill(null),// 最开始是9个格子 都是null的数组
       }],
       xIsNext: true,
       stepNumber: 0,
@@ -83,20 +86,20 @@ class Game extends React.Component {
   handleClick(i) {
     const history = this.state.history.slice(0,this.state.stepNumber + 1);
     const clickIndex =  this.state.clickIndex.slice(0,this.state.stepNumber + 1);
-    const current = history[history.length - 1];
+    const current = history[history.length - 1];//此次点击前的最新的9个格子的状态数据
 
-    const squares = current.squares.slice();
+    const squares = current.squares.slice(); // 深拷贝一份此次点击前9个格子状态的数组数据
     if (calculateWinner(squares) || squares[i]) {
       return;
     }
-    squares[i] = this.state.xIsNext ? 'X' : 'O';
+    squares[i] = this.state.xIsNext ? 'X' : 'O'; // 将此次点击的第i个格子的值由null改成X或O
     this.setState({
       history: history.concat([{
-        squares: squares,
+        squares: squares,// 将此次点击后的9个格子的状态存储到点击历史中
       }]),
-      xIsNext: !this.state.xIsNext,
-      stepNumber: history.length,
-      clickIndex: clickIndex.concat([i])
+      xIsNext: !this.state.xIsNext,// 下次点击应该是X还是O
+      stepNumber: history.length, // 一共走了几步
+      clickIndex: clickIndex.concat([i])// i表示点击的是第几个格子
     });
   }
 
@@ -109,12 +112,19 @@ class Game extends React.Component {
 
   render() {
     const history = this.state.history;
-    const current = history[this.state.stepNumber];
+    const current = history[this.state.stepNumber];// 当前的9个格子的数据
     const winner = calculateWinner(current.squares);
     let self = this;
     const moves = history.map((step,move) => {
       const clickEleIndex = self.state.clickIndex[move - 1];
       const desc = move ? 'Go to move #' + move + '(坐标位置:' + self.state.clickIndexMap[clickEleIndex] +')'  : 'Go to start';
+      if (move === history.length - 1) {
+        return (      
+          <li key={move}>
+            <button onClick = { () => this.jumpTo(move) }><strong>{desc}</strong></button>
+          </li>
+        )
+      }
       return (
         <li key={move}>
           <button onClick = { () => this.jumpTo(move) }>{desc}</button>
@@ -165,7 +175,7 @@ function calculateWinner(squares) {
   }
   return null;
 }
-// ========================================
+
 
 ReactDOM.render(
   <Game />,
