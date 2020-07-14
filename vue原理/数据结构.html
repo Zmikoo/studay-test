@@ -1,0 +1,1490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	
+</body>
+<script>
+    //有两种数据结构类似于数组，但在添加和删除元素时更为可控。它们就是栈和队列
+    //栈 遵从后进先出（LIFO--last in first out）原则的有序集合。新添加的或待删除的元素都保存在栈的末尾，称作栈顶，另一端就叫栈底。
+    //在栈里，新元素都靠近栈顶，旧元素都接近栈底。
+    //栈也被用在编程语言的编译器和内存中保存变量、方法调用等。
+    /*
+    在计算机领域中，堆栈是两种数据结构，它们只能在一端(称为栈顶(top))对数据项进行插入和删除。
+
+    堆：队列优先,先进先出；由操作系统自动分配释放 ，存放函数的参数值，局部变量的值等。其操作方式类似于数据结构中的栈。
+    栈：先进后出；动态分配的空间 一般由程序员分配释放， 若程序员不释放，程序结束时可能由OS回收，分配方式倒是类似于链表。 
+    JavaScript中的内存也分为栈内存和堆内存。一般来说，栈内存中存放的是存储对象的地址，而堆内存中存放的是存储对象的具体内容。
+    对于原始类型的值而言，其地址和具体内容都存在与栈内存中；而基于引用类型的值，其地址存在栈内存，其具体内容存在堆内存中。
+    基本类型如果是全局的，也放在堆上。而且，位于引用类型内的基本类型，也是放在堆上。
+    堆内存与栈内存是有区别的，栈内存运行效率比堆内存高，空间相对推内存来说较小，反之则是堆内存的特点。所以将构造简单的原始类型值放在栈内存中，将构造复杂的引用类型值放在堆中而不影响栈的效率。
+     */
+	function Stack(){
+		var items=[];
+        //添加元素到栈顶，也就是栈的末尾
+		this.push=function(element){
+			items.push(element);
+		};
+        //出栈遵循后进的先出；
+		this.pop=function(){
+			return items.pop();
+		};
+        //返回最后进栈的元素
+		this.peek=function(){
+			return items[items.length-1];
+		};
+        //栈为空的话将返回true，否则就返回false
+		this.isEmpty=function(){
+			return items.length===0;
+		};
+        //返回栈的长度
+		this.size=function(){
+			return items.length;
+		};
+        //移除栈里所有的元素，把栈清空
+		this.clear=function(){
+			items=[];
+		};
+
+		this.print=function(){
+			console.log(items.toString());
+		};
+	};
+
+	var stack=new Stack();
+	console.log(stack.isEmpty());
+
+	stack.push(5);
+	stack.push(8);
+	stack.push(11);
+	stack.push(15);
+	stack.pop();
+	stack.pop();
+	console.log(stack.peek());
+
+    //用栈实现 十进制转二进制
+	function divideBy2(decNumber){
+		var remStack=new Stack();
+		var rem;
+		var binaryString='';
+
+		while(decNumber>0){
+			rem=Math.floor(decNumber%2);
+			remStack.push(rem);
+			decNumber=Math.floor(decNumber/2);
+		};
+
+		while(!remStack.isEmpty()){
+			binaryString+=remStack.pop().toString();
+		};
+
+		return binaryString;
+	};
+
+	console.log(divideBy2(333));
+	console.log(divideBy2(19));
+	console.log(divideBy2(1000));
+
+    //用栈实现 十进制转任意进制
+	function baseConverter(decNumber,base){
+		var remStack=new Stack();
+		var rem;
+		var baseString='';
+		digts='0123456789ABCDEF';
+
+		while(decNumber>0){
+			rem=Math.floor(decNumber%base);
+			remStack.push(rem);
+			decNumber=Math.floor(decNumber/base);
+		};
+
+		while(!remStack.isEmpty()){
+			baseString+=digts[remStack.pop()];
+		};
+
+		return baseString;
+	};
+
+	console.log(baseConverter(100345,2));
+	console.log(baseConverter(100345,8));
+	console.log(baseConverter(100345,16));
+
+    //队列  遵循FIFO（First In First Out，先进先出，也称为先来先服务）原则的一组有序的项。
+    //队列在尾部添加新元素，并从顶部移除元素。最新添加的元素必须排在队列的末尾。
+	function Queue(){
+		var items=[];
+		this.enqueue=function(element){
+			items.push(element);
+		};
+
+		this.dequeue=function(){
+			return items.shift();
+		};
+
+		this.front=function(){
+			return items[0];
+		};
+
+		this.isEmpty=function(){
+			return items.length===0;
+		};
+
+		this.size=function(){
+			return items.length;
+		};
+
+		this.print=function(){
+			console.log(items.toString());
+		};
+	};
+
+	var queue=new Queue();
+	console.log(queue.isEmpty());
+
+	queue.enqueue('John');
+	queue.enqueue('Jack');
+	queue.enqueue('Camila')
+	console.log(queue.isEmpty());
+	queue.dequeue();
+	queue.dequeue();
+	queue.print();
+
+    //优先队列。元素的添加和移除是基于优先级的。
+    //(一个现实的例子就是机场登机的顺序。头等舱和商务舱乘客的优先级要高于经济舱乘客。在有些国家，老年人和孕妇（或带小孩的妇女）登机时也享有高于其他乘客的优先级。)
+    //实现一个优先队列，有两种选项：设置优先级，然后在正确的位置添加元素；或者用入列操作添加元素，然后按照优先级移除它们。
+	function PriorityQueuue(){
+		var items=[];
+		function QueueElement(element,priority){
+			this.element=element;
+			this.priority=priority;
+		};
+
+		this.enqueue=function(element,priority){
+			var queueElement=new QueueElement(element,priority);
+			if(this.isEmpty()){
+				items.push(queueElement.element);
+			}else{
+				var added=false;
+				for(var i=0;i<items.length;i++){
+					if(queueElement.priority<items[i].priority){
+						items.splice(i,0,queueElement.element);
+						added=true;
+						break;
+					}
+				}
+				if(!added){
+					items.push(queueElement.element);
+				}
+			}
+		};
+
+		this.dequeue=function(){
+			return items.shift();
+		};
+
+		this.front=function(){
+			return items[0];
+		};
+
+		this.isEmpty=function(){
+			return items.length===0;
+		};
+
+		this.size=function(){
+			return items.length;
+		};
+
+		this.print=function(){
+			console.log(items);
+		};
+	};
+
+	var priorityQueuue=new PriorityQueuue();
+	priorityQueuue.enqueue('John',2);
+	priorityQueuue.enqueue('Jack',1);
+	priorityQueuue.enqueue('Camila',1);
+	priorityQueuue.print();
+
+    //Queue类实现 循环队列——击鼓传花 
+    //定义一份名单，把里面的名字全都加入队列。给定一个数字，然后迭代队列。从队列开头移除一项，再将其添加到队列末尾（模拟击鼓传花（如果你把花传给了旁边的人，你被淘汰的威胁立刻就解除了）。一旦传递次数达到给定的数字，拿着花的那个人就被淘汰了（从队列中移除——行。最后只剩下一个人的时候，这个人就是胜者。
+	function hotPotato(nameList,num){
+		var queue=new Queue();
+
+		for(var i=0;i<nameList.length;i++){
+			queue.enqueue(nameList[i]);
+		}
+
+		var eliminated='';
+		while(queue.size()>1){
+			for(var i=0;i<num;i++){
+				queue.enqueue(queue.dequeue());
+			}
+
+			eliminated=queue.dequeue();
+			console.log(eliminated+'在击鼓传花中被淘汰');
+		}
+		return queue.dequeue();
+	};
+
+	var names=['John','Jack','Camila','Ingrid','Carl']; 
+	var winner=hotPotato(names,7);
+	console.log('胜利者:'+winner);
+
+    //链表   链表存储有序的元素集合，但不同于数组，链表中的元素在内存中并不是连续放置的。每个元素由一个存储元素本身的节点和一个指向下一个元素的引用（也称指针或链接）组成。
+	function LinkedList(){
+		var Node=function(element){
+            //当一个Node元素被创建时，它的next指针总是null.因为它会是列表的最后一项。
+			this.element=element;
+			this.next=null;
+		};
+
+		this.length=0;
+		var head=null;
+
+		this.append=function(element){
+            var node=new Node(element);
+            var current;
+            if(head===null){
+                head=node;
+            }else{
+                current=head;
+                while(current.next){
+                    //找结尾处的node并存储下来；
+                    current=current.next;
+                }
+                //将新增的node加入链表;新增node的next默认为null;
+                current.next=node;
+            }
+            this.length++;
+        };
+
+		this.insert=function(position,element){
+            if(position >= 0 && position <= length){
+                var node=new Node(element);
+                var current=head;
+                var previous;
+                var index=0;
+
+                if(position === 0){
+                    node.next=current;
+                    head=node;
+                }else{
+                    while(index++ < position){
+                        previous=current;
+                        current=current.next;
+                    }
+                    node.next=current;
+                    previous.next=node;
+                }
+
+                lenght++;
+                return true;
+            }else{
+                return false;
+            }
+        };
+
+		this.removeAt=function(position){
+            if(position>-1 || position<length){
+                var current=head;
+                var previous;
+                var index=0;
+
+                if(position===0){
+                    head=current.next;
+                }else{
+                    while(index++ < position){
+                        previous=current;
+                        current=current.next;
+                    }
+                    previous.next=current.next;//移除元素；
+                }
+                length--;
+                return current.element;
+            }else{
+                return null;
+            }
+        };
+
+		this.indexOf=function(element){
+            var current=head;
+            var index=0;
+            while(current){
+                if(element === current.element){
+                    return index;
+                }
+                index++;
+                current = current.next;
+            }
+
+            return -1;
+        };
+
+		this.isEmpty=function(){
+            return this.length===0;
+        };
+
+		this.size=function(){
+            return this.length;
+        };
+
+		this.toString=function(){
+            var current=head;
+            var string='';
+
+            while(current){
+                string += " &" + current.element;
+                current = current.next;
+            }
+            return string;
+        };
+        
+		this.print=function(){};
+
+        this.remove=function(element){
+            var index=this.indexOf(element);
+            return this.removeAt(index);
+        }
+
+        this.getHead=function(){
+            return head;
+        }
+	};
+
+    var list=new LinkedList();
+    list.append(15);
+    list.append(10);
+    list.append(5);
+    console.log(list.toString());
+    console.log(list.indexOf(10));
+    console.log(list.isEmpty());
+    console.log(list.size());
+    console.log(list.getHead());
+    console.log(list.removeAt(1));
+    console.log(list.toString());
+
+
+    //双向链表  双向列表和普通链表的区别在于，在链表中，一个节点只有链向下一个节点的链接，而在双向链表中，链接是双向的：一个链向下一个元素，另一个链向前一个元素
+    function DoublyLinkedList(){
+        var Node=function(element){
+            this.element=element;
+            this.next=null;
+            this.prev=null;
+        };
+
+        var length=0;
+        var head=null;
+        var tail=null;
+
+        this.insert=function(position,element){
+            if(position >= 0 && position <= length){
+                var node=new Node(element);
+                var current=head;
+                var previous;
+                var index=0;
+
+                if(position===0){
+                    if(!head){
+                        head=node;
+                        tail=node;
+                    }else{
+                        node.next=current;
+                        current.prev=node;
+                        head=node;
+                    }
+                }else if(position===length){
+                    current=tail;
+                    current.next=node;
+                    node.prev=current;
+                    tail=node;
+                }else{
+                    while(index++<position){
+                        previous=current;
+                        current=current.next;
+                    }
+
+                    node.next=current;                    
+                    node.prev=previous;
+
+                    previous.next=node;
+                    current.prev=node;
+                }
+
+                length++;
+                return true;
+            }else{
+                return false;
+            }
+        };
+
+        this.removeAt=function(position){
+            if(position>-1 && position <length){
+                var current=head;
+                var previous;
+                var index=0;
+                if(position===0){
+                    head=current.next;
+                    if(length===1){
+                        tail=null;
+                    }else{
+                        head.prev=null;
+                    }
+                }else if(position===length-1){
+                    current=tail;
+                    tail=current.prev;
+                    tail.next=null;
+                }else{
+                    while(index++<position){
+                        previous=current;
+                        current=current.next;
+                    }
+
+                    previous.next=current.next;
+                    current.next.prev=previous;
+                }
+
+                length--;
+                return current.element;
+            }else{
+                return null;
+            }
+        }
+    };
+
+    //集合 由一组无序且唯一（即不能重复）的项组成的。与ES6中的Set类相似(本质：无重复数据的数组 )；
+    function Set(){
+        var items={};
+
+        this.has=function(value){
+            return items.hasOwnProperty(value);
+        };
+
+        this.add=function(value){
+            if(!this.has(value)){
+                items[value]=value;
+                return true;
+            }
+
+            return false;
+        };
+
+        this.remove=function(value){
+            if(this.has(value)){
+                delete items[value];
+                return true;
+            }
+
+            return false;
+        };
+
+        this.clear=function(){
+            items={};
+        };
+
+        this.size=function(){
+            return Object.keys(items).length;
+        };
+
+        this.values=function(){
+            if(Object.keys){              
+                return Object.keys(items);
+            }else{
+                var keys=[];
+                for(var key in items){
+                    keys.push(key);
+                }
+
+                return keys;
+            }
+        };
+
+        //并集
+        this.union=function(otherSet){
+            var unionSet=new Set();
+            var values=this.values();
+            for(var i=0;i<values.length;i++){
+                unionSet.add(values[i]);
+            }
+
+            values=otherSet.values();
+            for(var j=0;j<values.length;j++){
+                unionSet.add(values[j]);
+            }
+
+            return unionSet;
+        };
+
+        //交集
+        this.intersection=function(otherSet){
+            var intersectionSet=new Set();
+
+            var values=this.values();
+            for(var i=0;i<values.length;i++){
+                if(otherSet.has(values[i])){
+                    intersectionSet.add(values[i]);
+                }
+            }
+
+            return intersectionSet;
+        };
+
+        //差集
+        this.difference=function(otherSet){
+            var differenceSet=new Set();
+            var values=this.values();
+            for(var i=0;i<values.length;i++){
+                if(!otherSet.has(values[i])){
+                    differenceSet.add(values[i]);
+                }
+            }
+
+            return differenceSet;
+        };
+
+        //子集
+        this.subset=function(otherSet){
+            if(this.size()>otherSet.size()){
+                return false;
+            }else{
+                var values=this.values();
+                for(var i=0;i<values.length;i++){
+                    if(!otherSet.has(values[i])){
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+
+    };
+
+    var set=new Set();
+    set.add(1);
+    set.add(2);
+    console.log(set);
+    console.log(set.values());
+    console.log(set.has(1),set.size());
+
+    var setA = new Set();
+    setA.add(2);
+    setA.add(3);
+    console.log(set.union(setA).values());
+    console.log(set.intersection(setA).values());
+    console.log(set.difference(setA).values());
+
+    var setB=new Set();
+    setB.add(1);
+
+    console.log(setB.subset(set));
+    console.log(setA.subset(set));
+
+    //在字典中，存储的是[键，值]对，其中键名是用来查询特定元素的。字典和集合很相似，集合以[值，值]的形式存储元素，字典则是以[键，值]的形式来存储元素。字典也称作映射。与ES6中的Map相似（本质：无重复数据的对象）；
+    function Dictionary(){
+        var items={};
+
+        this.has=function(key){
+            return key in items;
+        };
+
+        this.set=function(key,value){
+            items[key]=value;
+        };
+
+        this.remove=function(key){
+            if(this.has(key)){
+                delete items[key];
+                return true;
+            }
+
+            return false;
+        };
+
+        this.get=function(key){
+            return this.has(key)?items[key]:undefined;
+        };
+
+        this.getItems=function(){
+            return items;
+        }
+
+        this.values=function(){
+            var values=[];
+            for(var k in items){
+                if(this.has(k)){
+                    values.push(items[k]);
+                }
+            }
+
+            return values;
+        };
+
+         this.clear=function(){
+            items={};
+        };
+
+        this.size=function(){
+            return Object.keys(items).length;
+        };
+    }
+
+    var dictionary=new Dictionary();
+
+    dictionary.set('Jim','32');
+    dictionary.set('Kimi','21');
+    console.log(dictionary.has('Jim'));
+    console.log(dictionary.size());
+    console.log(dictionary.values());
+    console.log(dictionary.get('Jim'));
+    dictionary.remove('Jim');
+    console.log(dictionary.values());
+
+    //散列表（第一个非顺序数据结构）；
+    //如果要在数据结构中获得一个值，需要遍历整个数据结构来找到它。如果使用散列函数，就知道值的具体位置，因此能够快速检索到该值。散列函数的作用是给定一个键值，然后返回值在表中的地址。
+    //有时候，一些键会有相同的散列值。不同的值在散列表中对应相同位置的时候，我们称其为冲突。处理冲突有几种方法：分离链接、线性探查和双散列法。
+    //分离链接法包括为散列表的每一个位置创建一个链表并将元素存储在里面。它是解决冲突的最简单的方法，但是它在HashTable实例之外还需要额外的存储空间。
+    //线性探查:当想向表中某个位置加入一个新元素的时候，如果索引为index的位置已经被占据了，就尝试index+1的位置。如果index+1的位置也被占据了，就尝试index+2的位置，以此类推。
+    function HashTable(){
+        var table=[];
+
+        var loseloseHashCode=function(key){
+            //方法二：
+            var hash=5381;
+            for(var i=0;i<key.length;i++){
+                hash=hash*33+key.charCodeAt(i);
+            }
+            return hash%1031;
+
+            /*方法一：
+            var hash=0;
+            for(var i=0;i<key.length;i++){
+                hash+=key.charCodeAt(i);
+            }
+
+            return hash%37;
+            */
+        };
+
+        var ValuePair=function(key,value){
+            this.key=key;
+            this.value=value;
+
+            this.toString=function(){
+                return '['+this.key+'-'+this.value+']';
+            }
+        };
+
+        this.put=function(key,value){
+            var position=loseloseHashCode(key);
+            
+            //方法二：
+            while(table[position]){
+                position++;
+            }
+            table[position]=new ValuePair(key,value);
+            
+            /*方法一：
+            if(table[position]===undefined){
+                //如果这个位置是第一次被加入元素，会在这个位置上初始化一个LinkedList类的实例
+                table[position]=new LinkedList;
+            }
+            console.log(position+'-'+key);
+            table[position].append(new ValuePair(key,value));
+             */ 
+        };
+
+        this.get=function(key){
+
+            var position=loseloseHashCode(key);
+            
+            //方法二：
+            //如果table[position]处没有值或者table[position]不是要找的值，就往上找；
+            while(!table[position]||table[position].key!==key){
+                position++;
+                if(position>table.length){
+                    return '没有这个值';
+                }
+            }
+            return table[position].value;        
+            
+            /*方法一
+            if(table[position]!==undefined){
+                var current=table[position].getHead();
+            }
+
+            while(current){
+                if(current.element.key===key){
+                    return current.element.value;
+                }
+                current=current.next;
+            }
+            return '没有这个值';
+            */
+        };
+
+        this.remove=function(key){           
+            var position=loseloseHashCode(key);
+            while(!table[position]||table[position].key!==key){
+                position++;
+                if(position>table.length){
+                    return '没有这个值';
+                }
+            }
+            table[position]=undefined;
+
+            return true;
+            /*方法一
+            if(table[position]){
+                var current=table[position].getHead();
+
+                while(current){
+                    if(current.element.key==key){
+                        table[position].remove(current.element);
+                        if(table[position].isEmpty){
+                            table[position]=undefined;
+                        }
+                        return current.element;
+                    }
+                    current=current.next;
+                }
+
+            }
+            
+            return false;
+            */
+        }; 
+
+        this.size=function(){
+            return table.length;
+        };   
+
+        this.print=function(){
+            table.forEach((item,index)=>{
+                if(item){
+                    console.log(index+'.'+item.toString());
+                }
+            })
+        };
+    }
+
+    var hash=new HashTable();
+    ;
+    hash.put('Gandalf', 'gandalf@email.com');
+    hash.put('John', 'johnsnow@email.com');
+    hash.put('Tyrion', 'tyrion@email.com');
+    hash.put('Aaron', 'aaron@email.com');
+    hash.put('Donnie', 'donnie@email.com');
+    hash.put('Ana', 'ana@email.com');
+    hash.put('Jonathan', 'jonathan@email.com');
+    hash.put('Jamie', 'jamie@email.com');
+    hash.put('Sue', 'sue@email.com');
+    hash.put('Mindy', 'mindy@email.com');
+    hash.put('Paul', 'paul@email.com');
+    hash.put('Nathan', 'nathan@email.com');
+    hash.print();
+    console.log(hash.get('Sue'));
+    console.log(hash.get('kfjas'));
+    hash.remove('Jonathan');
+    hash.print();
+
+    //树：（第二种非顺序数据结构）它对于存储需要快速查找的数据非常有用
+    //树是一种分层数据的抽象模型。现实生活中最常见的树的例子是家谱，或是公司的组织架构图
+    //一个树结构包含一系列存在父子关系的节点。每个节点都有一个父节点（除了顶部的第一个节点）以及零个或多个子节点，位于树顶部的节点叫作根节点，至少有一个子节点的节点称为内部节点（7、 5、 9、 15、 13和20是内部节点）。没有子元素的节点称为外部节点或叶节点（3、 6、 8、 10、 12、 14、 18和25是叶节点）
+    //有关树的另一个术语是子树。子树由节点和它的后代构成。节点的一个属性是深度，节点的深度取决于它的祖先节点的数量。比如，节点3有3个祖先节点（5、 7和11），它的深度为3。树的高度取决于所有节点深度的最大值。一棵树也可以被分解成层级。根节点在第0层，它的子节点在第1层。
+    //二叉树中的节点最多只能有两个子节点：一个是左侧子节点，另一个是右侧子节点。这些定义有助于我们写出更高效的向/从树中插入、查找和删除节点的算法。二叉搜索树（BST）是二叉树的一种，但是它只允许你在左侧节点存储（比父节点）小的值，在右侧节点存储（比父节点）大（或者等于）的值。
+    //和链表一样，将通过指针来表示节点之间的关系（术语称其为边）。键是树相关的术语中对节点的称呼。
+    //查询一个值用二分法；
+    //BST存在一个问题：取决于你添加的节点数，树的一条边可能会非常深；也就是说，树的一条分支会有很多层，而其他的分支却只有几层，这会在需要在某条边上添加、移除和搜索某个节点时引起一些性能问题。为了解决这个问题，有一种树叫作阿德尔森-维尔斯和兰迪斯树（AVL树）。 AVL树是一种自平衡二叉搜索树，意思是任何一个节点左右两侧子树的高度之差最多为1。也就是说这种树会在添加或移除节点时尽量试着成为一棵完全树。另一种你同样应该学习的树是红黑树，它是一种特殊的二叉树。这种树可以进行高效的中序遍历（http://goo.gl/OxED8K）。此外，堆积树也值得你去学习（http://goo.gl/SFlhW6）。
+    function BinarySearchTree(){
+        var Node=function(key){
+            this.key=key;
+            this.left=null;
+            this.right=null;
+        }
+
+        var root=null;
+        //如果新节点的键小于当前节点的键（现在，当前节点就是根节点），那么需要检查当前节点的左侧子节点。如果它没有左侧子节点，就在那里插入新的节点。如果有左侧子节点，需要通过递归调用insertNode方法继续找到树的下一层。在这里，下次将要比较的节点将会是当前节点的左侧子节点。
+        var insertNode=function(node,newNode){
+            if(newNode.key<node.key){
+                if(node.left===null){
+                    node.left=newNode;
+                }else{
+                    insertNode(node.left,newNode);
+                }
+            }else{
+                if(node.right===null){
+                    node.right=newNode;
+                }else{
+                    insertNode(node.right,newNode);
+                }
+            }
+        }
+
+        this.insert=function(key){
+            var newNode=new Node(key);
+            if(root===null){
+                root=newNode;
+            }else{
+                insertNode(root,newNode);
+            }
+        };
+        //以一个共有三个键的子树举例：（以子树和子节点的观点来看遍历顺序）；
+        //中序遍历：1左子节点 2父节点 3右子节点，1左子树 2父节点 3右子树（最终输出值总体从小到大，起点：最小值，最左下点）
+        //先序遍历：1父节点  2左子节点 3右子节点  1父节点 2左子树 3右子树；  
+        //后序遍历：1左子节点 2右子节点 3父节点 1左子树 2右子树 3父节点
+        //一个节点的所有左子树的值必小于这个节点，右子树所有值必大于节点
+        //后序遍历------内部方法
+        var postOrderTraverseNode=function(node,callback){
+            if(node!==null){
+                postOrderTraverseNode(node.left,callback);
+                postOrderTraverseNode(node.right,callback);
+                callback(node.key);
+            }
+        }
+        //暴露给用户的方法;
+        this.postOrderTraverse=function(callback){
+            postOrderTraverseNode(root,callback);
+        }
+
+
+        //先序遍历；
+        var preOrderTraverseNode=function(node,callback){
+            if(node!==null){
+                callback(node.key);
+                preOrderTraverseNode(node.left,callback);
+                preOrderTraverseNode(node.right,callback);
+            }
+        }
+        
+        this.preOrderTraverse=function(callback){
+            preOrderTraverseNode(root,callback);
+        }
+
+        //中序遍历；
+        var inOrderTraverseNode=function(node,callback){
+            if(node!==null){
+                //没看懂执行顺序：（对递归理解需要深入）；
+                console.log('$.'+node.key);
+                inOrderTraverseNode(node.left,callback);
+                callback(node.key);
+                inOrderTraverseNode(node.right,callback);
+            }
+        }
+
+        this.inOrderTraverse=function(callback){
+            inOrderTraverseNode(root,callback);
+        }
+
+        //用二分法查询最小值
+        var minNode=function(node){
+            if(node){
+                while(node && node.left!==null){
+                    node=node.left;
+                }
+                return node.key;
+            }
+            return null;
+        }
+
+        this.min=function(){
+            return minNode(root);
+        }
+
+        var maxNode=function(node){
+            if(node){
+                while(node && node.right!==null){
+                    node=node.right;
+                }
+            }
+        }
+
+        this.max=function(){
+            return maxNode(root);
+        }
+
+        var searchNode=function(node,key){
+            if(node===null){
+                return 'Key:'+key+' is not found';
+            }
+
+            if(key<node.key){
+                return searchNode(node.left,key);
+            }else if(key>node.key){
+                return searchNode(node.right,key);
+            }else{
+                //这种情况就是key===node.key的情况了；
+                return 'Key:'+key+' is found';
+            }
+        }
+
+        this.search=function(key){
+            return searchNode(root,key);
+        }
+
+        var removeNode=function(node,key){
+            if(node===null){
+                return false;
+            }
+
+            if(key<node.key){
+                node.left=removeNode(node.left,key);
+                return node;
+            }else if(key>node.key){
+                node.right=removeNode(node.right,key);
+                return node;
+            //key===node.key
+            }else{
+                //没有子节点的节点；给这个节点赋予null值来移除它，但仅仅赋一个null值是不够的，还需要处理指针。在这里，这个节点没有任何子节点，但是它有一个父节点，需要通过返回null来将对应的父节点指针赋予null值。现在节点的值已经是null了，父节点指向它的指针也会接收到这个值，这也是我们要在函数中返回节点的值的原因。父节点总是会接收到函数的返回值。另一种可行的办法是将父节点和节点本身都作为参数传入方法内部。
+                if(node.left===null && node.right ===null){
+                    node=null;
+                    return node;
+                }
+                //有一个子节点的节点；跳过这个节点，直接将父节点指向它的指针指向子节点。
+                if(node.left===null){
+                    node=node.right;
+                    return node;
+                }else if(node.right===null){
+                    node=node.left;
+                    return node;
+                }
+                //有两个子节点的节点；当找到了需要移除的节点后，需要找到它右边子树中最小的节点，然后，用它右侧子树中最小节点的键去更新这个节点的值，通过这一步，我们改变了这个节点的键，也就是说它被移除了。 但是，这样在树中就有两个拥有相同键的节点了，这是不行的。要继续把右侧子树中的最小节点移除，毕竟它已经被移至要移除的节点的位置了。最后，向它的父节点返回更新后节点的引用
+                var aux=findMinNode(node.right);
+                node.key=aux.key;
+                node.right=removeNode(node.right,aux.key);
+                return node;
+
+            }
+        }
+
+        this.remove=function(key){
+            root=removeNode(root,key);
+        }
+    }
+
+    function printNode(value){
+        console.log(value);
+    }
+
+    var tree = new BinarySearchTree();
+    tree.insert(11);
+    tree.insert(7);
+    tree.insert(15);
+    tree.insert(5);
+    tree.insert(3);
+    tree.insert(9);
+    tree.insert(8);
+    tree.insert(10);
+    tree.insert(13);
+    tree.insert(12);
+    tree.insert(14);
+    tree.insert(20);
+    tree.insert(18);
+    tree.insert(25);
+    tree.inOrderTraverse(printNode);
+    console.log(tree.search(1));
+    console.log(tree.search(8));
+
+    //一个图G = (V, E)由以下元素组成。V：一组顶点 E：一组边，连接V中的顶点。
+    //由一条边连接在一起的顶点称为相邻顶点。一个顶点的度是其相邻顶点的数量。
+    //路径是顶点v1, v2,…,vk的一个连续序列，其中vi和vi+1是相邻的。简单路径要求不包含重复的顶点。如果图中不存在环，则称该图是无环的。如果图中每两个顶点间都存在路径，则该图是连通的。图可以是无向的（边没有方向）或是有向的（有向图）。如果图中每两个顶点间在双向上都存在路径，则该图是强连通的。图还可以是未加权的（目前为止我们看到的图都是未加权的）或是加权（权值）的，加权图的边被赋予了权值。
+    //从数据结构的角度来说，我们有多种方式来表示图。在所有的表示法中，不存在绝对正确的方式。图的正确表示法取决于待解决的问题和图的类型。
+    //邻接矩阵：图最常见的实现是邻接矩阵。每个节点都和一个整数相关联，该整数将作为数组的索引。我们用一个二维数组来表示顶点之间的连接。如果索引为i的节点和索引为j的节点相邻，则array[i][j]=== 1，否则array[i][j] === 0。不是强连通的图（稀疏图）如果用邻接矩阵来表示，则矩阵中将会有很多0，这意味着我们浪费了计算机存储空间来表示根本不存在的边。
+    //邻接表：我们也可以使用一种叫作邻接表的动态数据结构来表示图。邻接表由图中每个顶点的相邻顶点列表所组成。存在好几种方式来表示这种数据结构。我们可以用列表（数组）、链表，甚至是散列表或是字典来表示相邻顶点列表。
+    //关联矩阵：还可以用关联矩阵来表示图。在关联矩阵中，矩阵的行表示顶点，列表示边。关联矩阵通常用于边的数量比顶点多的情况下，以节省空间和内存。
+    //有两种算法可以对图进行遍历： 广度优先搜索（Breadth-First Search， BFS）和深度优先搜索（Depth-First Search， DFS）。图遍历可以用来寻找特定的顶点或寻找两个顶点之间的路径，检查图是否连通，检查图是否含有环等。
+    function  Graph(){
+        //使用一个数组来存储图中所有顶点的名字
+        var vertices=[];
+        //字典将会使用顶点的名字作为键，邻接顶点列表作为值。 
+        var adjList=new Dictionary();
+
+        this.addVertex=function(v){
+            vertices.push(v);
+            adjList.set(v,[]);
+        };
+
+        this.addEdge=function(v,w){
+            //无向图，如果为有向图则只需要写一个就可以；
+            adjList.get(v).push(w);
+            adjList.get(w).push(v);
+        };
+
+        //广度优先算法
+        var initializeColor=function(){
+            var color=[];
+            for(var i=0;i<vertices.length;i++){
+                color[vertices[i]]='white';
+            }
+            return color;
+        }
+
+        /* 
+        广度优先搜索(其实就是遍历图) BFS 
+        广度优先搜索算法会从指定的第一个顶点开始遍历图，先访问其所有的相邻点，就像一次访问图的一层。换句话说，就是先宽后深地访问顶点
+        */
+        this.bfs=function(v,callback){
+            var color=initializeColor();
+            var d=[];
+            var pred=[];
+
+            for(var i=0;i<vertices.length;i++){
+                d[vertices[i]]=0;
+                pred[vertices[i]]=null;
+            }
+
+            queue=new Queue();
+            queue.enqueue(v);      
+            color[v]='grey';//白色变灰色，表示被发现了,已入栈，下一步是 对其邻点的遍历； 
+
+            //对栈内的元素处理.
+            //终止条件为栈内没有要处理的元素，循环内部，找到颜色为白色的顶点时就加入栈中。黑色的忽略不计。灰色的是已经存在在栈中的也不做处理。
+            //灰色的是等待 while循环遍历以获取其邻点的顶点。
+            while(!queue.isEmpty()){
+                //顶点出栈并被截获；
+                var u=queue.dequeue();
+                //获取被截获的顶点的所有邻点；
+                var neighbors=adjList.get(u);
+
+                //遍历所有邻点；
+                for(i=0;i<neighbors.length;i++){
+                    var w=neighbors[i];
+                    //一旦发现白色的邻点就将其入栈并置灰；
+                    if(color[w]==='white'){
+                        //为白色则入栈并置灰；
+                        queue.enqueue(w);
+                        color[w]='grey';
+
+                        d[w]=d[u]+1;//当发现顶点u的邻点w时，则设置w的前溯点值为u。通过给d[u]加1来设置u和w之间的距离（u是w的前溯点， d[u]的值已经有了）。
+                        pred[w]=u;
+                    }
+                }
+                //顶点的所有临点都被遍历（发现并置灰后）把该顶点置为黑色（已被探索的顶点）；
+                color[u]='black';
+                //对被探索的顶点执行callback；
+                if(callback){
+                    callback(u);
+                }
+            }
+
+            return {
+                distances:d,
+                predecessors:pred
+            }
+        }
+
+        /*
+        深度优先算法  DFS
+        深度优先搜索算法将会从第一个指定的顶点开始遍历图，沿着路径直到这条路径最后一个顶点被访问了，接着原路回退并探索下一条路径。换句话说，它是先深度后广度地访问顶点
+        深度优先搜索的步骤是递归的，这意味着深度优先搜索算法使用栈来存储函数调用（由递归调用所创建的栈）。
+         */ 
+         this.dfs=function(callback){
+            var color=initializeColor();
+            for(var i=0;i<vertices.length;i++){
+                if(color[vertices[i]]==='white'){
+                    dfsVisit(vertices[i],color,callback);
+                }
+            }
+         };
+
+         var dfsVisit=function(u,color,callback){
+            color[u]='grey';
+            if(callback){
+                callback(u);
+            }
+
+            var neighbors=adjList.get(u);
+            for(var i=0;i<neighbors.length;i++){
+                var w=neighbors[i];
+                if(color[w]==='white'){
+                    dfsVisit(w,color,callback);
+                }
+            }
+            color[u]='black';
+         }
+
+        this.toString=function(){
+            var s='';
+            for(var i=0;i<vertices.length;i++){
+                s += vertices[i] + '=>';
+                var neighbors=adjList.get(vertices[i]);
+
+                for(var j=0;j<neighbors.length;j++){
+                    s+=neighbors[j]+' ';
+                }
+                s+='\n';
+            }
+
+            return s;
+        }
+    }
+
+    function printNode(value){
+        console.log('Visited vertex:'+value);
+    }
+
+    var graph=new Graph();
+    var myVertices=['A','B','C','D','E','F','G','H','I'];
+    for(var i=0;i<myVertices.length;i++){
+        graph.addVertex(myVertices[i]);
+    }
+
+    graph.addEdge('A', 'B');
+    graph.addEdge('A', 'C');
+    graph.addEdge('A', 'D');
+    graph.addEdge('C', 'D');
+    graph.addEdge('C', 'G');
+    graph.addEdge('D', 'G');
+    graph.addEdge('D', 'H');
+    graph.addEdge('B', 'E');
+    graph.addEdge('B', 'F');
+    graph.addEdge('E', 'I');
+    console.log(graph.toString());
+    var shortestPathA = graph.bfs(myVertices[0],printNode);
+    console.log(shortestPathA);
+
+    //输出从顶点A到图中其他顶点的最短路径（衡量标准是边的数量）
+    //用顶点A作为源顶点
+    var fromVertex=myVertices[0];
+    //对于每个其他顶点（除了顶点A),计算顶点A到它的路径
+    for(var i=1;i<myVertices.length;i++){
+        var toVertex=myVertices[i];
+        //创建一个栈来存储路径值，接着追溯toVertex到fromVertex的路径
+        var path=new Stack();
+        //变量v被赋值为其前溯点的值，这样能够反向追溯这条路径。for循环中的循环条件没有看懂；
+        for(var v=toVertex; v!==fromVertex; v=shortestPathA.predecessors[v]){
+            //将变量v添加到栈中
+            path.push(v);
+        }
+        //最后，源顶点也会被添加到栈中，以得到完整路径。
+        path.push(fromVertex);
+        //创建了一个s字符串，并将源顶点赋值给它（它是最后一个加入栈中的，所以它是第一个被弹出的项)
+        var s=path.pop();
+        //当栈是非空的，我们就从栈中移出一个项并将其拼接到字符串s的后面
+        while(!path.isEmpty()){
+            s+='-'+path.pop();
+        }
+        console.log(s);
+    }
+
+    graph.dfs(printNode);
+
+    //排序和搜索算法
+    function ArrayList(){
+        var array=[];
+        this.insert=function(item){
+            array.push(item);
+        };
+
+        this.toString=function(){
+            return array.join(' & ');
+        };
+
+        var swap=function(index1,index2){
+            var aux=array[index1];
+            array[index1]=array[index2];
+            array[index2]=aux;
+        };
+
+        //冒泡排序：没懂
+        this.bubbleSort=function(){
+            var length=array.length;
+            for(var i=0;i<length;i++){
+                for(var j=0;j<length-1-i;j++){
+                    if(array[j]>array[j+1]){
+                        swap(j,j+1);
+                    }
+                }
+            }
+        };
+
+        //选择排序：没懂
+        this.selectionSort=function(){
+            var length=array.length;
+            var indexMin;
+            for(var i=0;i<length-1;i++){
+                indexMin=i;
+                for(var j=i;j<length;j++){
+                    if(array[indexMin]>array[j]){
+                        indexMin=j;
+                    }
+                }
+
+                if(i!==indexMin){
+                    swap(i,indexMin);
+                }
+            }
+        };
+
+        //插入排序：没懂
+        this.insertionSort=function(){
+            var length=array.length;
+            var j;
+            var temp;
+            //基础知识补充：for循环，语句 1 在循环（代码块）开始前执行，语句 2 定义运行循环（代码块）的条件，语句 3 在循环（代码块）已被执行之后执行
+            for(var i=1;i<length;i++){
+                //存储i及array[i]从而可以在while循环内使用；
+                j = i;
+                temp = array[i];
+                //基础知识补充：while循环 当指定的条件为 true 时循环指定的代码块
+                //只要变量j比0大（因为数组的第一个索引是0——没有负值的索引）并且数组中前面的值比待比较的值大（行{5}），我们就把这个值移到当前位置上（行{6}）并减小j。
+                while(j > 0 && array[j-1] > temp){
+                    array[j]=array[j-1];
+                    j--;
+                }
+                array[j]=temp;
+            }
+        };
+
+        //归并排序:第一个可以被实际使用的排序算法。前三个排序算法性能不好，但归并排序性能不错
+        var merge=function(left,right){
+            var result=[];
+            var il=0;
+            var ir=0;
+            while(il<left.length && ir<right.length){
+                if(left[il]<right[ir]){
+                    result.push(left[il++]);
+                }else{
+                    result.push(right[ir++]);
+                }
+            }
+
+            while(il<left.length){
+                result.push(left[il++]);
+            }
+
+            while(ir<right.length){
+                result.push(right[ir++]);
+            }
+
+            return result;
+        };
+        
+        var mergeSortRec=function(array){
+            var length=array.length;
+            if(length===1){
+                return array;
+            }
+
+            var mid=Math.floor(length/2);
+            var left=array.slice(0,mid);
+            var right=array.slice(mid,length);
+
+            return merge(mergeSortRec(left),mergeSortRec(right));
+        };
+        
+        this.mergeSort=function(){
+            array=mergeSortRec(array);
+        };
+
+        //快速排序:最常用的排序算法,且它的性能通常比其他的复杂度为O(nlogn)的排序算法要好。
+        var swapQuickStort=function(array,index1,index2){
+            var aux=array[index1];
+            array[index1]=array[index2];
+            array[index2]=aux;
+        };
+        
+        var partition=function(array,left,right){
+            var pivot=array[Math.floor((right+left)/2)];
+            var i=left;
+            var j=right;
+            while(i<=j){
+                while(array[i]<pivot){
+                    i++;
+                }
+                while(array[j]>pivot){
+                    j--;
+                }
+                if(i<=j){
+                    swapQuickStort(array,i,j);
+                    i++;
+                    j--;
+                }
+            }
+
+            return i;
+        };
+        
+        var quick=function(array,left,right){
+            var index;
+
+            if(array.length>1){
+                index=partition(array,left,right);
+
+                if(left<index-1){
+                    quick(array,left,index-1);
+                }
+
+                if(index<right){
+                    quick(array,index,right);
+                }
+            }
+        };
+        
+        this.quickSort=function(){
+            quick(array, 0, array.length-1);
+        };
+
+        //搜索算法：例如BinarySearchTree类的search方法，LinkedList类的indexOf方法
+        
+        //顺序搜索:顺序或线性搜索是最基本的搜索算法。它的机制是，将每一个数据结构中的元素和我们要找的元素做比较。顺序搜索是最低效的一种搜索算法。
+        this.sequentialSearch=function(item){
+            for(var i=0;i<array.length;i++){
+                if(item===array[i])  return i;
+            }
+
+            return -1;
+        };
+
+        //二分搜索
+        this.binarySearch=function(item){
+            this.quickSort();
+
+            var low=0;
+            var high=array.length-1;
+            var mid;
+            var element;
+
+            while(low<=high){
+                mid=Math.floor((low+high)/2);
+                element=array[mid];
+                if(element<item){
+                    low=mid+1;
+                }else if(element>item){
+                    high=mid-1;
+                }else{
+                    return mid;
+                }
+            }
+            return -1;
+        }
+        
+    }
+
+    function  createNonSortedArray(size){
+        var array=new ArrayList();
+        for(var i=size;i>0;i--){
+            array.insert(i);
+        }
+        return array;
+    }
+    console.time("selectionSort initialize");
+    var arraySelection=createNonSortedArray(5);
+    console.log(arraySelection.toString());
+    arraySelection.selectionSort();
+    console.log(arraySelection.toString());
+    console.timeEnd("selectionSort initialize");
+
+    console.time("bubbleSort initialize");
+    var arrayBubble=createNonSortedArray(5);
+    console.log(arrayBubble.toString());
+    arrayBubble.bubbleSort();
+    console.log(arrayBubble.toString());
+    console.timeEnd("bubbleSort initialize");
+
+    console.time("insertionSort initialize");
+    var arrayInsertion=createNonSortedArray(5);
+    console.log(arrayInsertion.toString());
+    arrayInsertion.insertionSort();
+    console.log(arrayInsertion.toString());
+    console.timeEnd("insertionSort initialize");
+
+    console.time("mergeSort initialize");
+    var arrayMerge=createNonSortedArray(5);
+    console.log(arrayMerge.toString());
+    arrayMerge.mergeSort();
+    console.log(arrayMerge.toString());
+    console.timeEnd("mergeSort initialize");
+
+    console.time("quickSort initialize");
+    var arrayQuick=createNonSortedArray(5);
+    console.log(arrayQuick.toString());
+    arrayQuick.quickSort();
+    console.log(arrayQuick.toString());
+    console.timeEnd("quickSort initialize");
+
+    /*
+    递归算法是一种直接或者间接调用自身函数或者方法的算法。递归算法的实质是把问题分解成规模缩小的同类问题的子问题，然后递归调用方法来表示问题的解。
+    能够像下面这样直接调用自身的方法或函数，是递归函数：
+    var recursiveFunction = function(someParam){
+    recursiveFunction(someParam);
+    };
+    能够像下面这样间接调用自身的函数，也是递归函数：
+    var recursiveFunction1 = function(someParam){
+    recursiveFunction2(someParam);
+    };
+    var recursiveFunction2 = function(someParam){
+    recursiveFunction1(someParam);
+    };
+    注意：1.为何用递归呢？更快吗？递归并不比普通版本更快，反倒更慢。但要知道，递归更容易理解，并且它所需的代码量更少。(ECMAScript 6中，因为尾调用优化的缘故，递归并不会更慢。但是在其他语言中，递归通常更慢。)
+        2.在递归调用的过程当中系统为每一层的返回点、局部量等开辟了栈来存储。递归次数过多容易造成栈溢出等，所以一般不提倡用递归算法设计程序。
+     */
+     //如果忘记加上用以停止函数递归调用的边界条件，会发生什么呢？递归并不会无限地执行下去；浏览器会抛出错误，也就是所谓的栈溢出错误（stack overflow error）
+     //每个浏览器都有自己的上限。Chrome v37中，示例函数执行了20 955次，而后浏览器抛出错误RangeError: Maximumcall stack size exceeded（超限错误：超过最大调用栈大小）。 Firefox v27中，函数执行了343 429次，然后浏览器抛出错误 InternalError: too much recursion（内部错误：递归次数过多）根据操作系统和浏览器的不同，具体数值会所有不同，但区别不大。
+     //斐波那契数列
+     function fib(num){
+        var n1=1;
+        var n2=1;
+        var n=1;
+        for(var i=3;i<=num;i++){
+            n==n1+n2;
+            n1=n2;
+            n2=n;
+        }
+        return n;
+     }
+
+    function fibonacci(num){
+        if(num===1 || num===2){
+            return 1;
+        }
+
+        return fibonacci(num-1)+fibonacci(num-2);
+    }
+    console.log(fibonacci(6));
+
+    /*动态规划：是一种将复杂问题分解成更小的子问题来解决的优化技术。
+    要注意动态规划和分而治之（归并排序和快速排序算法中用到的那种）是不同的方法。分而治之方法是把问题分解成相互独立的子问题，然后组合它们的答案，而动态规划则是将问题分解成相互依赖的子问题。
+    用动态规划解决问题时，要遵循三个重要步骤：
+        (1) 定义子问题；
+        (2) 实现要反复执行而解决子问题的部分（这一步要参考前一节讨论的递归的步骤）；
+        (3) 识别并求解出边界条件。
+    */
+
+    /*
+    大O表示法：描述算法的性能和复杂程度。
+    如何衡量算法的效率？通常是用资源，例如CPU（时间）占用、内存占用、硬盘占用和网络占用。当讨论大O表示法时，一般考虑的是CPU（时间）占用。
+
+    function increment(num){
+        return ++num;
+    }
+    假设运行increment(1)函数，执行时间等于X。如果再用不同的参数（例如2）运行一次increment函数，执行时间依然是X。和参数无关， increment函数的性能都一样。因此，我们说上述函数的复杂度是O(1)（常数）
+
+    function sequentialSearch(array, item){
+        for (var i=0; i<array.length; i++){
+            if (item === array[i]){ //{1}
+                return i;
+            }
+        }
+        return -1;
+    }
+    如果将含10个元素的数组（[1, ..., 10]）传递给sequentialSearch函数，假如搜索1这个元素，那么，
+    第一次判断时就能找到想要搜索的元素。在这里我们假设每执行一次行{1} ，开销是 1。
+    现在，假如要搜索元素11。行{1}会执行10次（遍历数组中所有的值，并且找不到要搜索的
+    元素，因而结果返回 -1）。如果行{1}的开销是1，那么它执行10次的开销就是10， 10倍于第一种
+    假设。
+    现在，假如该数组有1000个元素（[1, ..., 1000]）。搜索1001的结果是行{1}执行了1000
+    次（然后返回-1）。
+    注意， sequentialSearch函数执行的总开销取决于数组元素的个数（数组大小），而且也
+    和搜索的值有关。如果是查找数组中存在的值，行{1}会执行几次呢？如果查找的是数组中不存
+    在的值，那么行{1}就会执行和数组大小一样多次，这就是通常所说的最坏情况。
+    最坏情况下，如果数组大小是10，开销就是10；如果数组大小是1000，开销就是1000。可以
+    得出sequentialSearch函数的时间复杂度是O(n)， n是（输入）数组的大小。
+
+
+    时间复杂度O(n)的代码只有一层循环，而O(n2)的代码有双层嵌套循环（如冒泡排序）。如果算法有三层遍历数组的嵌套循环，它的时间复杂度很可能就是O(n3)。
+     */
+
+</script>
+</html>

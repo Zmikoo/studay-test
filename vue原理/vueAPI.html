@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='UTF-8'/>
+        <style>
+            .fade-enter-active,.fade-leave-active{
+                transition: opacity .5s;
+            }
+            .fade-enter,.fade-leave-to{
+                opacity: 0;
+            }
+
+            [v-clock]{
+                display: none
+            }
+        </style>
+        <link href="https://cdn.jsdelivr.net/npm/animate.css@3.5.1" rel="stylesheet" type="text/css">
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    </head>
+    <body>
+        <div id = 'app'>
+            <button v-on:click='show = !show'>切换transition</button>
+            <transition name='fade'
+                        enter-active-class='animated tada'
+                        leave-active-class='animated bounceOutRight'>
+
+                        <!-- :duration='{enter:500,leave:800}'
+                        v-on:before-enter="beforeEnter"
+                        v-on:enter="enter"
+                        v-on:after-enter="afterEnter"
+                        v-on:enter-cancelled="enterCancelled"
+
+                        v-on:before-leave="beforeLeave"
+                        v-on:leave="leave"
+                        v-on:after-leave="afterLeave"
+                        v-on:leave-cancelled="leaveCancelled" -->
+                <p v-if='show'>transition组件切换动画</p>
+            </transition>
+            <!-- v-cloak可以解决插值闪烁问题（防止代码被人看见），在元素里加入 v-cloak即可 -->
+            <!-- 这个指令保持在元素上直到关联实例结束编译。和 CSS 规则如 [v-cloak] { display: none } 一起用时，这个指令可以隐藏未编译的 Mustache 标签直到实例准备完毕 -->
+            <div v-clock> {{msg}} </div>
+            <!-- 跳过这个元素和它的子元素的编译过程。可以用来显示原始 Mustache 标签。 -->
+            <span v-pre>{{ this will not be compiled }}</span>
+        </div>
+    </body>
+    <script>
+        new Vue({
+            el:'#app',
+            op: 'hel',// 自定义的  属性
+            data:{
+                show: true,
+                msg: 'hello'
+            },
+            mounted(){
+                    //使用 vm.$options 可以获取 实例上自定义的  属性
+                    console.log(this.$options,this.$options.op)
+            },
+            methods:{
+                beforeEnter: function (el) {
+                    // ...
+                },
+                // 当与 CSS 结合使用时
+                // 回调函数 done 是可选的
+                enter: function (el, done) {
+                    // ...
+                    done()
+                },
+                afterEnter: function (el) {
+                    // ...
+                },
+                enterCancelled: function (el) {
+                    // ...
+                },
+
+                // --------
+                // 离开时
+                // --------
+
+                beforeLeave: function (el) {
+                    // ...
+                },
+                // 当与 CSS 结合使用时
+                // 回调函数 done 是可选的
+                leave: function (el, done) {
+                    // ...
+                    done()
+                },
+                afterLeave: function (el) {
+                    // ...
+                },
+                // leaveCancelled 只用于 v-show 中
+                leaveCancelled: function (el) {
+                    // ...
+                }
+            }
+        })
+    </script>
+</html>

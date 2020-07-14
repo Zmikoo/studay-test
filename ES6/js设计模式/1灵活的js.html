@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+		</style>
+	</head>
+	<body>
+	</body>
+    <script>
+        // 对象收编变量
+        var checkObject = {
+            checkName(){return this},
+            checkEmail(){return this}
+        }
+        checkObject.checkName().checkEmail();// this指向当前对象，return this后可以链式调用；
+
+        var checkObject = function(){// 这种写法的作用： 每次调用都会返回新的对象，这样每个人使用时就不会互相影响
+            return {
+                checkName(){},
+                checkEmail(){}
+            }
+        }
+
+        var checkObject = function(){}
+        checkObject.prototype.checkEmail = function(){};// 这样写创建实例的时候，使用该方法都要依赖prototype原型依次寻找，而找到的方法都是同一个，他们都绑定在checkObject对象类的原型上
+        checkObject.prototype.checkName = function(){}
+        checkObject.prototype = {// 等同上边的写法，但是这两种写法不能混用，会发生覆盖。
+            checkEmail(){},
+            checkName(){}
+        }
+
+        // 拓展js原生对象
+        Function.prototype.addMethod = function(name, fn) { 
+            this[name] = fn; 
+            return this; 
+        }
+        var methods = function(){};
+        methods.addMethod('checkName',function(){ return this; });// 通过这种方式添加的方法添加在了methods实例上，不会污染Function原型给团队其他人造成影响
+        methods.addMethod('checkEmail',function(){ return this; });
+
+        methods.checkEmail().checkEmail();// 由于return this，所以调用时可以链式调用；
+
+        methods.addMethod('checkName',function(){}).addMethod('checkEmail',function(){});// 链式调用理由同上；
+    </script>
+</html>

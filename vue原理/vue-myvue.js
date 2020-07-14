@@ -117,7 +117,7 @@
 
 
 
-    /* 烧脑start */
+    /* 烧脑start   没看懂 */
     /**
      * cached(function(){}) = function cachedFn(str){
             var hit = cache[str];
@@ -155,4 +155,53 @@
     console.log(capitalize('v-model'))//v-Model
     console.log(hyphenate('v-model'))
     /* 烧脑end */
+
+    console.log(Object.getOwnPropertyNames({val1:'',val2:'',val3:''}))
+    console.log(Object.getOwnPropertyDescriptor({val1:'',val2:'',val3:''}))
+    console.log(Object.keys({val1:'',val2:''}))
+    console.log(Array.isArray([1]))
+    console.log(Array.isArray('1'))
+    console.log({val:''} instanceof Object)
+    function polyfillBind(fn,ctx){
+        function boundFn(a){
+            var l = arguments.length;
+            return l ? (l > 1 ? fn.apply(ctx,arguments) : fn.call(ctx,a)) : fn.call(ctx) 
+        }
+        boundFn._length = fn.length;
+        return boundFn
+    }
+
+    function nativeBind(fn,ctx) {
+        return fn.bind(ctx)
+    }
+
+    var bind = Function.prototype.bind ? nativeBind : polyfillBind;
+
+    function toArray(list,start){
+        start = start || 0;
+        var i = list.length - start;
+        var ret = new Array(i);
+        while(i--) {
+            ret[i] = list[i + start];
+        }
+        return ret
+    }
+
+    // 对象浅拷贝
+    function extend(to,_from){
+        for (var key in _from){
+            to[key] = _from[key];
+        }
+        return to
+    }
+
+    function toObject(arr){
+        var res = {};
+        for (var i = 0;i <arr.length; i++) {
+            if(arr[i]) {
+                extend(res,arr[i])
+            }
+        }
+        return res;
+    }
 })
